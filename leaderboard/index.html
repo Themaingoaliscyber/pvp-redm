@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="leaderboardMenu" class="leaderboard-menu hidden" role="dialog" aria-modal="true" aria-label="Badlands leaderboard">
+    <div class="board-frame" aria-hidden="true"></div>
+
+
+    <header class="leaderboard-header">
+      <div class="brand-mark" aria-hidden="true">
+        <span>BL</span>
+      </div>
+
+      <div class="title-stack">
+        <h1>LEADERBOARD</h1>
+        <div class="viewer-summary">
+          <span id="viewerName" class="viewer-summary-name">Steam Player</span>
+          <span id="viewerRank" class="viewer-summary-rank">#-</span>
+          <span id="viewerMessage" class="viewer-summary-message">Your stats are syncing.</span>
+        </div>
+      </div>
+
+      <div class="header-search">
+        <span class="section-kicker">Search Player</span>
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input id="leaderboardSearch" type="text" autocomplete="off" spellcheck="false" placeholder="Type a name..." aria-label="Search player" />
+          <button id="clearSearch" class="clear-search hidden" type="button" aria-label="Clear search" title="Clear search">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div id="playersBadge" class="intel-chip">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <span>PLAYERS: 0</span>
+        </div>
+
+        <button id="refreshLeaderboard" class="icon-button refresh-button" type="button" aria-label="Refresh leaderboard" title="Refresh">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M21 12a9 9 0 0 1-15.17 6.56" />
+            <path d="M3 12A9 9 0 0 1 18.17 5.44" />
+            <path d="M21 3v6h-6" />
+            <path d="M3 21v-6h6" />
+          </svg>
+        </button>
+
+        <div id="topRangeButtons" class="top-range-tabs" aria-label="Leaderboard range">
+          <button class="top-range-button is-active" type="button" data-top-limit="20">20</button>
+          <button class="top-range-button" type="button" data-top-limit="40">40</button>
+          <button class="top-range-button" type="button" data-top-limit="60">60</button>
+          <button class="top-range-button" type="button" data-top-limit="80">80</button>
+          <button class="top-range-button" type="button" data-top-limit="100">100</button>
+        </div>
+
+        <button id="closeLeaderboard" class="icon-button leaderboard-close-button" type="button" aria-label="Close leaderboard" title="Close">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="leaderboard-content">
+      <section class="main-panel">
+        <div id="podiumGrid" class="podium-grid" aria-label="Top three players">
+          <article id="podiumRank2" class="podium-card podium-second">
+            <div class="podium-ring" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M7 4h10v2h3v2a5 5 0 0 1-4.24 4.94A5.25 5.25 0 0 1 13 16.86V19h3v2H8v-2h3v-2.14a5.25 5.25 0 0 1-2.76-3.92A5 5 0 0 1 4 8V6h3V4Zm0 4H6a3 3 0 0 0 2.03 2.84A7.22 7.22 0 0 1 7 8Zm10 0c0 .98-.18 1.93-.52 2.84A3 3 0 0 0 19 8h-2Z" />
+              </svg>
+            </div>
+            <div class="podium-copy">
+              <span class="podium-label">Second</span>
+              <div class="podium-name-line">
+                <strong id="secondName">No second place yet</strong>
+                <span id="secondStatus" class="leaderboard-status-dot is-offline" title="Offline"></span>
+              </div>
+              <span id="secondSubtitle">Closest contender</span>
+            </div>
+            <span id="secondRank" class="podium-rank">#2</span>
+            <div class="podium-stats">
+              <span><b id="secondKills">0</b><small>Kills</small></span>
+              <span><b id="secondDeaths">0</b><small>Deaths</small></span>
+              <span><b id="secondKd">0.00</b><small>K/D</small></span>
+            </div>
+          </article>
+
+          <article id="topChampionCard" class="podium-card podium-first">
+            <div class="podium-ring crown-ring" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M3.06 8.62c-.15-.87.86-1.46 1.55-.9l3.07 2.52 3.45-5.52a1 1 0 0 1 1.74 0l3.45 5.52 3.07-2.52c.69-.56 1.7.03 1.55.9l-1.42 8.52A2.25 2.25 0 0 1 17.3 19H6.7a2.25 2.25 0 0 1-2.22-1.86L3.06 8.62ZM6 20h12v2H6v-2Z" />
+              </svg>
+            </div>
+            <div class="podium-copy">
+              <span class="podium-label">Top Player</span>
+              <div class="podium-name-line">
+                <strong id="championName">No leader yet</strong>
+                <span id="championStatus" class="leaderboard-status-dot is-offline" title="Offline"></span>
+              </div>
+              <span id="championSubtitle">Highest kills right now</span>
+            </div>
+            <span id="championRank" class="podium-rank">#1</span>
+            <div class="podium-stats">
+              <span><b id="championKills">0</b><small>Kills</small></span>
+              <span><b id="championDeaths">0</b><small>Deaths</small></span>
+              <span><b id="championKd">0.00</b><small>K/D</small></span>
+            </div>
+          </article>
+
+          <article id="podiumRank3" class="podium-card podium-third">
+            <div class="podium-ring" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 2.7a1.08 1.08 0 0 1 .96.6l2.42 4.9 5.41.79a1.08 1.08 0 0 1 .6 1.84l-3.92 3.82.93 5.39a1.08 1.08 0 0 1-1.57 1.14L12 18.63l-4.84 2.54a1.08 1.08 0 0 1-1.56-1.14l.92-5.39-3.92-3.82a1.08 1.08 0 0 1 .6-1.84l5.42-.79 2.42-4.9a1.08 1.08 0 0 1 .96-.6Z" />
+              </svg>
+            </div>
+            <div class="podium-copy">
+              <span class="podium-label">Third</span>
+              <div class="podium-name-line">
+                <strong id="thirdName">No third place yet</strong>
+                <span id="thirdStatus" class="leaderboard-status-dot is-offline" title="Offline"></span>
+              </div>
+              <span id="thirdSubtitle">Holding the podium</span>
+            </div>
+            <span id="thirdRank" class="podium-rank">#3</span>
+            <div class="podium-stats">
+              <span><b id="thirdKills">0</b><small>Kills</small></span>
+              <span><b id="thirdDeaths">0</b><small>Deaths</small></span>
+              <span><b id="thirdKd">0.00</b><small>K/D</small></span>
+            </div>
+          </article>
+        </div>
+
+        <div class="table-toolbar">
+          <div class="table-title-copy">
+            <strong id="rangeLabel">Top 20</strong>
+            <span id="resultCount" class="result-count">0 players loaded</span>
+          </div>
+        </div>
+
+        <div class="leaderboard-table-shell">
+          <div id="leaderboardRows" class="leaderboard-table-body"></div>
+          <div id="leaderboardEmpty" class="leaderboard-empty hidden">No PvP stats yet.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Kills HUD</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Asigură-te că hud-ul nu interferează cu restul UI-ului */
+    #hud {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- HUD container -->
+  <div id="hud"></div>
+
+  <!-- Scriptul care injectează topul -->
+  <script src="script.js"></script>
+</body>
+</html>
