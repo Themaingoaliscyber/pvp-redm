@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="edit-overlay" class="edit-overlay" aria-hidden="true">
+        <div class="edit-scrim"></div>
+        <div class="edit-grid"></div>
+        <div id="external-topplayers-card" class="external-editor-card" data-external-editor-card="topplayers" hidden>
+            <span class="external-editor-title">Lobby Top 3</span>
+            <span class="external-editor-subtitle">TopPlayersDisplayLobby</span>
+        </div>
+
+        <section id="edit-panel" class="edit-panel" aria-label="HUD editor">
+            <div class="edit-header">
+                <div class="edit-copy">
+                    <span class="edit-kicker">BADLANDS REDM PVP</span>
+                    <span class="edit-title">HUD Editor</span>
+                </div>
+
+                <div class="edit-actions" aria-label="Editor actions">
+                    <button id="toggle-grid" class="edit-icon-button" type="button" aria-pressed="true" aria-label="Hide grid" data-tooltip="Grid">
+                        <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 4h16v16H4zM4 12h16M12 4v16"></path>
+                        </svg>
+                        <span class="sr-only">Grid</span>
+                    </button>
+                    <button id="reset-position" class="edit-icon-button" type="button" aria-label="Reset layout" data-tooltip="Reset">
+                        <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M8 7H5V4M5 7a8 8 0 1 1-1 5"></path>
+                        </svg>
+                        <span class="sr-only">Reset</span>
+                    </button>
+                    <button id="done-editing" class="edit-done-button" type="button">
+                        <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>Done</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="edit-status" aria-label="Editor status">
+                <div class="edit-status-item">
+                    <span>Visible</span>
+                    <strong id="visible-count">7</strong>
+                </div>
+                <div class="edit-status-item">
+                    <span>Grid</span>
+                    <strong id="grid-state">On</strong>
+                </div>
+            </div>
+
+            <div class="edit-toolbar">
+                <div class="edit-toolbar-head">
+                    <span class="edit-group-label">Elements</span>
+                    <span id="element-count" class="edit-group-count">7 / 7</span>
+                </div>
+
+                <div id="element-toggles" class="edit-toggles" aria-label="HUD elements">
+                    <button class="edit-toggle toggle-kills" type="button" data-toggle-card="kills" data-toggle-label="Kills" aria-pressed="true">
+                        <span class="toggle-dot" aria-hidden="true"></span>
+                        <span class="toggle-copy">
+                            <span class="toggle-name">Kills</span>
+                            <span class="toggle-state">On</span>
+                        </span>
+                        <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                    </button>
+
+                    <button class="edit-toggle toggle-deaths" type="button" data-toggle-card="deaths" data-toggle-label="Deaths" aria-pressed="true">
+                        <span class="toggle-dot" aria-hidden="true"></span>
+                        <span class="toggle-copy">
+                            <span class="toggle-name">Deaths</span>
+                            <span class="toggle-state">On</span>
+                        </span>
+                        <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                    </button>
+
+                    <button class="edit-toggle toggle-kd" type="button" data-toggle-card="kd" data-toggle-label="K/D" aria-pressed="true">
+                        <span class="toggle-dot" aria-hidden="true"></span>
+                        <span class="toggle-copy">
+                            <span class="toggle-name">K/D</span>
+                            <span class="toggle-state">On</span>
+                        </span>
+                        <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                    </button>
+
+                    <button class="edit-toggle toggle-rank" type="button" data-toggle-card="rank" data-toggle-label="Rank" aria-pressed="true">
+                        <span class="toggle-dot" aria-hidden="true"></span>
+                        <span class="toggle-copy">
+                            <span class="toggle-name">Rank</span>
+                            <span class="toggle-state">On</span>
+                        </span>
+                        <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                    </button>
+
+                    <button class="edit-toggle toggle-xp" type="button" data-toggle-card="xp" data-toggle-label="XP" aria-pressed="true">
+                        <span class="toggle-dot" aria-hidden="true"></span>
+                        <span class="toggle-copy">
+                            <span class="toggle-name">XP</span>
+                            <span class="toggle-state">On</span>
+                        </span>
+                        <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                    </button>
+
+                    <button class="edit-toggle toggle-online" type="button" data-toggle-card="online" data-toggle-label="Online" aria-pressed="true">
+                        <span class="toggle-dot" aria-hidden="true"></span>
+                        <span class="toggle-copy">
+                            <span class="toggle-name">Online</span>
+                            <span class="toggle-state">On</span>
+                        </span>
+                        <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                    </button>
+
+                    <button class="edit-toggle toggle-id" type="button" data-toggle-card="id" data-toggle-label="ID" aria-pressed="true">
+                        <span class="toggle-dot" aria-hidden="true"></span>
+                        <span class="toggle-copy">
+                            <span class="toggle-name">ID</span>
+                            <span class="toggle-state">On</span>
+                        </span>
+                        <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="hud-root" class="hud-root is-empty">
+        <div id="stats-row" class="stats-row">
+            <article id="card-kills" class="hud-card theme-kills stat-card" data-editor-card="kills">
+                <img class="card-icon" src="icons/kills.png" alt="Kills">
+                <div class="card-copy">
+                    <span class="card-label">Kills</span>
+                    <span id="kills" class="card-value">0</span>
+                </div>
+            </article>
+
+            <article id="card-deaths" class="hud-card theme-deaths stat-card" data-editor-card="deaths">
+                <img class="card-icon" src="icons/deaths.png" alt="Deaths">
+                <div class="card-copy">
+                    <span class="card-label">Deaths</span>
+                    <span id="deaths" class="card-value">0</span>
+                </div>
+            </article>
+
+            <article id="card-kd" class="hud-card theme-kd stat-card" data-editor-card="kd">
+                <img class="card-icon" src="icons/kd.png" alt="K/D Ratio">
+                <div class="card-copy">
+                    <span class="card-label">K/D</span>
+                    <span id="kd" class="card-value">0.00</span>
+                </div>
+            </article>
+        </div>
+
+        <div class="details-row">
+            <div id="rank-stack" class="rank-stack is-pending">
+                <article id="rank-card" class="hud-card rank-card rank-greenhorn" data-editor-card="rank">
+                    <span id="rank-name" class="rank-name"></span>
+                </article>
+
+                <article id="card-xp" class="hud-card xp-card progress-card" data-editor-card="xp">
+                    <div class="xp-head">
+                        <span id="xp-text" class="xp-text"></span>
+                    </div>
+                    <div class="xp-track">
+                        <div id="xp-fill" class="xp-fill"></div>
+                    </div>
+                </article>
+            </div>
+
+            <div id="meta-stack" class="meta-stack">
+                <article id="card-online" class="hud-card theme-online meta-card info-card" data-editor-card="online">
+                    <span class="card-label">Online:</span>
+                    <span id="playerCount" class="card-value">0</span>
+                </article>
+
+                <article id="card-id" class="hud-card theme-neutral meta-card info-card" data-editor-card="id">
+                    <span class="card-label">Your ID:</span>
+                    <span id="playerId" class="card-value">-</span>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

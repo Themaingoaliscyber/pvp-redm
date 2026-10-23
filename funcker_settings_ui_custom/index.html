@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badlands Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div id="panel">
+        <div class="panel-header">
+            <p class="eyebrow">BADLANDS CONTROL</p>
+            <h2>
+                <i class="fa-solid fa-gear title-icon" aria-hidden="true"></i>
+                <span>SETTINGS</span>
+            </h2>
+            <p class="subtext">Enable or disable each element below, or use the quick actions at the bottom.</p>
+        </div>
+
+        <div class="options-shell">
+            <div class="options-grid">
+                <button class="option off" onclick="toggle('hud')" id="hudBtn" type="button">
+                    <span class="option-left">
+                        <i class="fa-solid fa-eye"></i>
+                        <span class="label">HUD</span>
+                    </span>
+                    <span class="state">OFF</span>
+                </button>
+
+                <button class="option off" onclick="toggle('notify')" id="notifyBtn" type="button">
+                    <span class="option-left">
+                        <i class="fa-solid fa-bell-slash"></i>
+                        <span class="label">NOTIFY</span>
+                    </span>
+                    <span class="state">OFF</span>
+                </button>
+
+                <button class="option on" onclick="toggle('killfeed')" id="killfeedBtn" type="button">
+                    <span class="option-left">
+                        <i class="fa-solid fa-skull-crossbones"></i>
+                        <span class="label">KILLFEED</span>
+                    </span>
+                    <span class="state">ON</span>
+                </button>
+
+                <button class="option on" onclick="toggle('topplayers')" id="topplayersBtn" type="button">
+                    <span class="option-left">
+                        <i class="fa-solid fa-trophy"></i>
+                        <span class="label">LOBBY TOP 3</span>
+                    </span>
+                    <span class="state">ON</span>
+                </button>
+
+                <button class="option on" onclick="toggle('lobbycommands')" id="lobbycommandsBtn" type="button">
+                    <span class="option-left">
+                        <i class="fa-solid fa-terminal"></i>
+                        <span class="label">QUICK COMMANDS</span>
+                    </span>
+                    <span class="state">ON</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="action-grid">
+            <button class="utility enable" onclick="enableAll()" type="button">
+                <i class="fa-solid fa-check"></i>
+                <span>Enable All</span>
+            </button>
+
+            <button class="utility danger" onclick="disableAll()" type="button">
+                <i class="fa-solid fa-power-off"></i>
+                <span>Disable All</span>
+            </button>
+
+            <button class="utility close" onclick="closeUI()" type="button">
+                <i class="fa-solid fa-xmark"></i>
+                <span>Close</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
