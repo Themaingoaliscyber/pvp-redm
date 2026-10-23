@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "RDR Lino", Arial, sans-serif;
+    background: transparent;
+    overflow: hidden;
+}
+
+#killfeed {
+    position: absolute;
+    top: 360px;
+    left: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.kill {
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    animation: slideLeft 5s forwards;
+    border-radius: 5px;
+    width: fit-content;
+    max-width: 100%;
+    background: transparent;
+    border: 5px solid transparent;
+    border-image: url('../assets/bg-container.png') 24 fill stretch;
+}
+
+.killer, .victim, .kill-distance {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    height: 22px;
+    padding: 0 7px;
+    line-height: 22px;
+    border-radius: 5px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+    background: transparent;
+    border: 5px solid transparent;
+}
+
+.killer {
+    border-image: url('../assets/killer.png') 20 fill stretch;
+}
+
+.victim {
+    border-image: url('../assets/victim.png') 20 fill stretch;
+}
+
+.weapon-icon {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    filter: brightness(0) invert(1);
+}
+
+.kill-distance {
+    font-size: 11px;
+    border-radius: 5px;
+    height: 22px;
+    padding: 0 7px;
+    line-height: 22px;
+}
+
+.distance-close {
+    border-image: url('../assets/distance-close.png') 24 fill stretch;
+}
+.distance-mid {
+    border-image: url('../assets/distance-mid.png') 24 fill stretch;
+}
+.distance-far {
+    border-image: url('../assets/distance-far.png') 24 fill stretch;
+}
+
+
+@keyframes slideLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+}
