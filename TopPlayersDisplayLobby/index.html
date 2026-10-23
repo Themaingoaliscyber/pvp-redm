@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lobby Stats</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="hud"></div>
+
+  <div id="statsMenu" class="stats-menu hidden" role="dialog" aria-modal="true">
+    <button id="closeStatsMenu" class="stats-close-button" type="button" aria-label="Close">X</button>
+
+    <div class="stats-header">
+      <div class="stats-title-row">
+        <h1>LOBBY STATS</h1>
+        <span id="statsLobbyBadge" class="title-badge green-badge">LOBBY: -</span>
+        <span id="statsPlayerCount" class="title-badge black-badge">PLAYERS: 0</span>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="stats-table-shell">
+      <div id="statsPlayersBody" class="stats-table-body"></div>
+      <div id="statsEmpty" class="stats-empty hidden">No player stats yet.</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
