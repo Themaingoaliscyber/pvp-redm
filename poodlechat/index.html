@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link href="vendor/latofonts.css" rel="stylesheet">
+  <link href="vendor/flexboxgrid.6.3.1.min.css" rel="stylesheet"></link>
+  <link href="vendor/animate.3.5.2.min.css" rel="stylesheet"></link>
+  <link href="index.css" rel="stylesheet"></link>
+
+  <script src="vendor/vue.2.3.3.min.js" type="text/javascript"></script>
+  <script src="config.default.js" type="text/javascript"></script>
+  <script src="config.js" type="text/javascript"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- App Template -->
+  <script type="text/x-template" id="app_template">
+    <div id="app" @keyup.esc="hideInput">
+      <div class="chat-window" :style="this.style" :class="{ 'fadeOut animated': !showWindow, 'hidden': shouldHide }">
+        <div class="chat-messages" ref="messages">
+          <message v-for="msg in messages"
+                   :templates="templates"
+                   :multiline="msg.multiline"
+                   :args="msg.args"
+                   :color="msg.color"
+                   :badge="msg.badge"
+                   :extra-badges="msg.extraBadges"
+                   :template="msg.template"
+                   :template-id="msg.templateId"
+                   :key="msg">
+          </message>
+        </div>
+      </div>
+      <div class="chat-input" v-show="showInput">
+        <div>
+					<div class="channels">
+						<div class="channel tab active-tab" id="channel-local">Local</div>
+						<div class="channel tab" id="channel-global">Global</div>
+						<div class="tab" id="badge-toggle">SELECT A NAME BADGE</div>
+						<div class="tab" id="mute-toggle" @click="toggleSettingsPanel">MUTE</div>
+						<div class="channel tab" id="channel-staff">Staff</div>
+						<div class="tab" id="cycle-instructions">(Press Tab to cycle)</div>
+						<div class="tab" id="emoji-toggle">&#128512;</div>
+					</div>
+					<div class="prefix">&#10148;</div>
+          <textarea v-model="message"
+                    ref="input"
+                    type="text"
+                    autofocus
+                    spellcheck="false"
+                    placeholder="Type here"
+                    @keyup="keyUp"
+                    @keydown="keyDown"
+                    @keypress.enter.prevent="send">
+          </textarea>
+        </div>
+        <suggestions :message="message" :suggestions="suggestions">
+        </suggestions>
+				<div id="emoji-window">
+					<input id="emoji-search" type="text" placeholder="Search..." tabindex="-1">
+					<div id="emoji-list" class="no-focus" tabindex="-1"></div>
+				</div>
+				<div id="settings-window" v-show="showSettings">
+					<div class="settings-header">
+						<div>
+							<span class="settings-title">Chat Settings</span>
+							<span class="settings-subtitle">Visibility & muted players</span>
+						</div>
+						<button type="button" class="settings-close" @click="hideInput(true)">CLOSE</button>
+					</div>
+					<div class="settings-grid">
+						<div class="settings-section visibility-section">
+							<div class="settings-section-header">
+								<span>Visibility</span>
+							</div>
+							<button type="button" class="visibility-toggle" :class="{ enabled: !chatHiddenByUser }" @click="toggleChatVisibility">
+								{{ chatHiddenByUser ? 'SHOW CHAT' : 'HIDE CHAT' }}
+							</button>
+						</div>
+						<div class="settings-section mute-section">
+							<div class="settings-section-header">
+								<span>Online Players</span>
+								<button type="button" class="mini-action" @click="refreshMuteData">REFRESH</button>
+							</div>
+							<div class="mute-id-row">
+								<input id="mute-player-id" v-model="mutePlayerId" type="text" placeholder="Player ID" @keydown.enter.prevent="mutePlayerById">
+								<button type="button" class="mute-id-button" @click="mutePlayerById">MUTE ID</button>
+							</div>
+							<div class="settings-list online-list">
+								<div class="player-row" v-for="player in onlinePlayers" :key="player.identifier || player.id">
+									<div class="player-main">
+										<span class="player-name">{{ player.name }}</span>
+										<span class="player-meta">ID {{ player.id }}</span>
+									</div>
+									<button type="button" class="mute-action" :class="{ muted: player.muted }" @click="muteOnlinePlayer(player)">
+										{{ player.muted ? 'UNMUTE' : 'MUTE' }}
+									</button>
+								</div>
+								<div class="empty-list" v-if="onlinePlayers.length === 0">No online players.</div>
+							</div>
+						</div>
+						<div class="settings-section muted-section">
+							<div class="settings-section-header">
+								<span>Muted Players</span>
+								<span class="mute-count">{{ personalMutes.length }}</span>
+							</div>
+							<div class="settings-list muted-list">
+								<div class="player-row" v-for="mute in personalMutes" :key="mute.identifier">
+									<div class="player-main">
+										<span class="player-name">{{ mute.name }}</span>
+										<span class="player-meta">{{ mute.online ? ('Online ID ' + mute.id) : 'Offline' }}</span>
+									</div>
+									<button type="button" class="mute-action muted" @click="unmutePlayer(mute)">UNMUTE</button>
+								</div>
+								<div class="empty-list" v-if="personalMutes.length === 0">No muted players.</div>
+							</div>
+						</div>
+					</div>
+					<div class="mute-status" v-show="muteStatusMessage">{{ muteStatusMessage }}</div>
+				</div>
+				<div id="badge-window">
+					<div id="badge-window-header">
+						<span class="badge-window-title">Custom Badges</span>
+						<span id="badge-window-note">You can choose one badge every 10 minutes.</span>
+					</div>
+					<div id="badge-list" class="no-focus" tabindex="-1"></div>
+				</div>
+      </div>
+    </div>
+  </script>
+
+  <!-- Message Template -->
+  <script type="text/x-template" id="message_template">
+    <div class="msg" :class="{ multiline }">
+      <span v-html="textEscaped"></span>
+    </div>
+  </script>
+
+  <!-- Suggestions Template -->
+  <script type="text/x-template" id="suggestions_template">
+    <div class="suggestions-wrap" v-show="currentSuggestions.length > 0">
+      <ul class="suggestions">
+        <li class="suggestion" v-for="s in currentSuggestions">
+          <p>
+            <span :class="{ 'disabled': s.disabled }">
+              {{s.name}}
+            </span>
+            <span class="param"
+                  v-for="(p, index) in s.params"
+                  :class="{ 'disabled': p.disabled }">
+              [{{p.name}}]
+            </span>
+          </p>
+          <small class="help">
+            <template v-if="!s.disabled">
+              {{s.help}}
+            </template>
+            <template v-for="p in s.params" v-if="!p.disabled">
+              {{p.help}}
+            </template>
+          </small>
+        </li>
+      </ul>
+    </div>
+  </script>
+
+  <!-- Scripts -->
+  <script type="text/javascript" src="./Suggestions.js"></script>
+  <script type="text/javascript" src="./Message.js"></script>
+  <script type="text/javascript" src="./App.js"></script>
+
+  <!-- Main Entry -->
+  <script type="text/javascript">
+  window.post = (url, data) => {
+    var request = new XMLHttpRequest();
+    request.open('POST', url, true);
+    request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    request.send(data);
+  }
+
+  const instance = new Vue({
+    el: '#app',
+    render: h => h(APP),
+  });
+
+  window.emulate = (type, detail = {}) => {
+    detail.type = type;
+    window.dispatchEvent(new CustomEvent('message', {
+      detail,
+    }));
+  };
+  </script>
+
+</body>
+</html>
